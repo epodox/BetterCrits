@@ -2,6 +2,6 @@
 ## Title: Crit Commander
 ## DefaultState: Enabled
 ## Author: Epodox
-## Version: 0.1
+## Version: 0.1.7
 ## Notes: Enhances your crit damage!
 main.lua
