@@ -22,7 +22,7 @@ function f:OnEvent(event, ...)
     end
 	
 	if critical and sourceGUID == playerGUID then
-		C_Timer.After(.6, playSound)
+		C_Timer.After(.5, playSound)
 	end
 end
 
