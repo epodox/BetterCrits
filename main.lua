@@ -22,6 +22,6 @@ function f:OnEvent(event, ...)
     end
 	
 	if critical and sourceGUID == playerGUID then
-		PlaySoundFile("Sounds\\wow1.mp3")
+		PlaySoundFile("Interface\\AddOns\\CritCommander\\Sounds\\wow1.mp3", "Dialog")
 	end
 end
