@@ -1,0 +1,6 @@
+## Interface: 11302
+## Title: Crit Commander
+## Author: Epodox
+## Version: 0.1
+
+main.lua
