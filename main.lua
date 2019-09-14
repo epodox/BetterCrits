@@ -22,6 +22,10 @@ function f:OnEvent(event, ...)
     end
 	
 	if critical and sourceGUID == playerGUID then
-		PlaySoundFile("Interface\\AddOns\\CritCommander\\Sounds\\wow1.mp3", "Dialog")
+		C_Timer.After(.6, playSound)
 	end
+end
+
+function playSound()
+	PlaySoundFile("Interface\\AddOns\\CritCommander\\Sounds\\wow1.mp3", "Dialog")
 end
