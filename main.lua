@@ -1,14 +1,12 @@
 local playerGUID = UnitGUID("player")
-local MSG_CRITICAL_HIT = "Your %s critically hit %s for %d damage!"
 
-local f = CreateFrame("Frame")
-f:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-f:SetScript("OnEvent", function(self, event)
-	-- pass a variable number of arguments
+local combatLogFrame = CreateFrame("Frame")
+combatLogFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+combatLogFrame:SetScript("OnEvent", function(self, event)
 	self:OnEvent(event, CombatLogGetCurrentEventInfo())
 end)
 
-function f:OnEvent(event, ...)
+function combatLogFrame:OnEvent(event, ...)
 	local timestamp, subevent, _, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags = ...
 	local spellId, spellName, spellSchool
 	local amount, overkill, school, resisted, blocked, absorbed, critical, glancing, crushing, isOffHand
