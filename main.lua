@@ -4,6 +4,7 @@ combatLogFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 combatLogFrame:SetScript("OnEvent", function(self, event) 
 	self:OnEvent(event, CombatLogGetCurrentEventInfo())
 end)
+SendSystemMessage("Crit Commander loaded")
 
 
 function combatLogFrame:OnEvent(event, ...)
