@@ -1,10 +1,10 @@
 local playerGUID = UnitGUID("player")
-
 local combatLogFrame = CreateFrame("Frame")
 combatLogFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-combatLogFrame:SetScript("OnEvent", function(self, event)
+combatLogFrame:SetScript("OnEvent", function(self, event) 
 	self:OnEvent(event, CombatLogGetCurrentEventInfo())
 end)
+
 
 function combatLogFrame:OnEvent(event, ...)
 	local timestamp, subevent, _, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags = ...
