@@ -20,6 +20,10 @@ function combatLogFrame:OnEvent(event, ...)
     end
 	
 	if critical and sourceGUID == playerGUID then
-		PlaySoundFile("Sounds\\wow1.mp3")
+		C_Timer.After(.5, playSound)
 	end
+end
+
+function playSound()
+	PlaySoundFile("Interface\\AddOns\\CritCommander\\Sounds\\wow1.mp3", "Dialog")
 end
