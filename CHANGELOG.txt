@@ -1,0 +1,7 @@
+v0.1.9 (Under development)
+- Addes system message so you know the addon has loaded.
+- Refactor of base code.
+
+
+v0.1.8 (Current)
+- Base alpha version that is working.
