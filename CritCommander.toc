@@ -4,6 +4,7 @@
 ## Author: Epodox
 ## Version: 0.1.8
 ## Notes: Enhances your crit damage!
+## SavedVariables: critCommanderConfig
 
 Luas\Options.lua
 Luas\Crit.lua
