@@ -7,5 +7,6 @@
 ## SavedVariables: critCommanderConfig
 
 Luas\Options.lua
+Luas\OptionsFrame.lua
 Luas\Crit.lua
 Luas\Main.lua
