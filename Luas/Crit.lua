@@ -1,29 +1,25 @@
--- Creating namespace
-local CritCommander, NS = Crit
+-- Register the Namespace
+local CritCommander, NS = ...
 
 
--- Setting defaults for locals
-local soundDelay = .5
-local soundChannel = "Dialog"
-
-
-local function register()
-    local playerGUID = UnitGUID("player")
-    
+-- Subscribes to combat event.
+local function NS.register()
     local combatLogFrame = CreateFrame("Frame")
     combatLogFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
     combatLogFrame:SetScript("OnEvent", function(self, event) 
         self:OnEvent(event, CombatLogGetCurrentEventInfo())
     end)
     
-    SendSystemMessage("Crit Commander has been loaded.")
+    SendOutput("Crit Commander - Crit module registered.")
 end
 
 
+-- Parses event, plays sound if its a crit.
 local function combatLogFrame:OnEvent(event, ...)
 	local timestamp, subevent, _, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags = ...
 	local spellId, spellName, spellSchool
 	local amount, overkill, school, resisted, blocked, absorbed, critical, glancing, crushing, isOffHand
+
 
 	if subevent == "SWING_DAMAGE" then
 		amount, overkill, school, resisted, blocked, absorbed, critical, glancing, crushing, isOffHand = select(12, ...)
@@ -32,19 +28,25 @@ local function combatLogFrame:OnEvent(event, ...)
     elseif subevent == "RANGE_DAMAGE" then
 		spellId, spellName, spellSchool, amount, overkill, school, resisted, blocked, absorbed, critical, glancing, crushing, isOffHand = select(12, ...)
     end
+
 	
-	if critical and sourceGUID == playerGUID then
-		C_Timer.After(soundDelay, playSound)
+	if critical and sourceGUID == critCommanderConfig[critCommanderRealm][critCommanderChar] then
+		C_Timer.After(critCommanderConfig[critCommanderRealm][critCommanderChar].SoundDelay, playSound)
 	end
 end
 
 
+-- Fucntion to play sound file.
 local function playSound()
-	PlaySoundFile("Interface\\AddOns\\CritCommander\\Sounds\\wow1.mp3", soundChannel)
+	PlaySoundFile("wow1.mp3")
 end
 
 
--- Adding to the namespace
-NS.Crit.Register = register
-NS.Crit.SoundDelay = soundDelay
-NS.Crit.SoundChannel = soundChannel
+-- Backing function to play the sound files.
+local function backingPlaySound(soundFileName)
+	PlaySoundFile("Interface\\AddOns\\CritCommander\\Sounds\\" .. soundFileName, critCommanderConfig[critCommanderRealm][critCommanderChar].SoundChannel)
+end
+
+
+-- Crit.lua end.
+SendOutput("Crit Commander - Crit.lua has been loaded.")
