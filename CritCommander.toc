@@ -2,7 +2,7 @@
 ## Title: Crit Commander
 ## DefaultState: Enabled
 ## Author: Epodox
-## Version: 0.1.8
+## Version: 0.1.9
 ## Notes: Enhances your crit damage!
 ## SavedVariables: critCommanderConfig
 
