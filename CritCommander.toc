@@ -4,7 +4,7 @@
 ## Author: Epodox
 ## Version: 0.1.9
 ## Notes: Enhances your crit damage!
-## SavedVariables: critCommanderConfig
+## SavedVariables: CritCommanderDB
 
 Luas\Options.lua
 Luas\OptionsFrame.lua
