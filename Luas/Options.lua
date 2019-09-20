@@ -56,7 +56,7 @@ local function critCommander_VARIABLES_LOADED()
 	if ( not critCommanderConfig[critCommanderRealm][critCommanderChar].SoundChannel ) then 
 		critCommanderConfig[critCommanderRealm][critCommanderChar].SoundChannel = critCommanderConfig_DefaultSoundChannel
 	end
-	if ( not critCommanderConfig[critCommanderRealm][critCommanderChar].SoundChannel ) then 
+	if ( not critCommanderConfig[critCommanderRealm][critCommanderChar].Debug ) then 
 		critCommanderConfig[critCommanderRealm][critCommanderChar].Debug = critCommanderConfig_DefaultDebug
 	end
     
