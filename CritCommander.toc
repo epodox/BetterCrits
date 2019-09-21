@@ -6,7 +6,7 @@
 ## Notes: Enhances your crit damage!
 ## SavedVariables: CritCommanderDB
 
-Luas\Options.lua
+Luas\Config.lua
 Luas\OptionsFrame.lua
 Luas\Crit.lua
 Luas\Main.lua

@@ -1,7 +1,7 @@
 -- Register the Namespace.
 local _, NS = ...;
 NS.Options = {};
-
+local Options = NS.Options
 
 -- Globals.
 critCommander_variablesLoaded = false;

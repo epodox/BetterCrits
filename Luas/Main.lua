@@ -1,10 +1,12 @@
--- Register the Namespace
-local CritCommander, NS = ...
+-- Register the Namespace.
+local _, NS = ...;
+--local Crit = NS.Crit;
+--local Config = NS.Config;
 
 
 -- Starts listening for crits.
-NS.Register()
+--NS.Crit.Register();
 
 
 -- Main.lua end.
-SendOutput("Crit Commander - Main.lua has been loaded.")
+--NS.Config.SendOutput("Crit Commander - Main.lua has been loaded.")

@@ -1,21 +1,22 @@
--- Register the Namespace
-local CritCommander, NS = ...
+-- Register the Namespace.
+local _, NS = ...;
+NS.Crit = {};
+local Crit = NS.Crit;
+--local Config = NS.Config;
 
 
 -- Subscribes to combat event.
-local function NS.register()
-    local combatLogFrame = CreateFrame("Frame")
-    combatLogFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-    combatLogFrame:SetScript("OnEvent", function(self, event) 
-        self:OnEvent(event, CombatLogGetCurrentEventInfo())
-    end)
+local combatLogFrame = CreateFrame("Frame")
+combatLogFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+combatLogFrame:SetScript("OnEvent", function(self, event) 
+	self:OnEvent(event, CombatLogGetCurrentEventInfo()) 
+end)
     
-    SendOutput("Crit Commander - Crit module registered.")
-end
 
+SendSystemMessage(CritCommanderDB[NS.Config.Data.Realm][NS.Config.Data.Char].GUID)
 
 -- Parses event, plays sound if its a crit.
-local function combatLogFrame:OnEvent(event, ...)
+function combatLogFrame:OnEvent(event, ...)
 	local timestamp, subevent, _, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags = ...
 	local spellId, spellName, spellSchool
 	local amount, overkill, school, resisted, blocked, absorbed, critical, glancing, crushing, isOffHand
@@ -30,8 +31,8 @@ local function combatLogFrame:OnEvent(event, ...)
     end
 
 	
-	if critical and sourceGUID == critCommanderConfig[critCommanderRealm][critCommanderChar] then
-		C_Timer.After(critCommanderConfig[critCommanderRealm][critCommanderChar].SoundDelay, playSound)
+	if critical and sourceGUID == mGuid then
+		C_Timer.After(CritCommanderDB[NS.Config.Data.Realm][NS.Config.Data.Char].SoundDelay, playSound)
 	end
 end
 
@@ -44,9 +45,9 @@ end
 
 -- Backing function to play the sound files.
 local function backingPlaySound(soundFileName)
-	PlaySoundFile("Interface\\AddOns\\CritCommander\\Sounds\\" .. soundFileName, critCommanderConfig[critCommanderRealm][critCommanderChar].SoundChannel)
+	PlaySoundFile("Interface\\AddOns\\CritCommander\\Sounds\\" .. soundFileName, CritCommanderDB[critCommanderRealm][critCommanderChar].SoundChannel)
 end
 
 
 -- Crit.lua end.
-SendOutput("Crit Commander - Crit.lua has been loaded.")
+SendSystemMessage("Crit Commander - Crit.lua has been loaded.")
