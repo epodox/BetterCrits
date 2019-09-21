@@ -46,7 +46,7 @@ function()
 end)
 debugCheckButton:SetScript("OnClick", 
 function() 
-    if debugCheckButton:GetChecked() then 
+    if debugCheckButton:GetChecked() == true then 
         debugCheckButton:SetChecked(false)
         debugValue = false
     else 

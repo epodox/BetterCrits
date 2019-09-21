@@ -1,19 +1,19 @@
--- Register the Namespace.
-local _, NS = ...;
-NS.Crit = {};
-local Crit = NS.Crit;
---local Config = NS.Config;
+----------------------------------------
+-- Namespace / Locals
+----------------------------------------
+local _, ns = ...;
 
 
+
+
+----------------------------------------
+-- Events / Handlers
+----------------------------------------
 -- Subscribes to combat event.
 local combatLogFrame = CreateFrame("Frame")
 combatLogFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-combatLogFrame:SetScript("OnEvent", function(self, event) 
-	self:OnEvent(event, CombatLogGetCurrentEventInfo()) 
-end)
-    
+combatLogFrame:SetScript("OnEvent", function(self, event) self:OnEvent(event, CombatLogGetCurrentEventInfo()) end)
 
-SendSystemMessage(CritCommanderDB[NS.Config.Data.Realm][NS.Config.Data.Char].GUID)
 
 -- Parses event, plays sound if its a crit.
 function combatLogFrame:OnEvent(event, ...)
@@ -32,11 +32,16 @@ function combatLogFrame:OnEvent(event, ...)
 
 	
 	if critical and sourceGUID == mGuid then
-		C_Timer.After(CritCommanderDB[NS.Config.Data.Realm][NS.Config.Data.Char].SoundDelay, playSound)
+		C_Timer.After(CritCommanderDB[ns.Config.Data.Realm][ns.Config.Data.Char].SoundDelay, playSound)
 	end
 end
 
 
+
+
+----------------------------------------
+-- Functions
+----------------------------------------
 -- Fucntion to play sound file.
 local function playSound()
 	PlaySoundFile("wow1.mp3")

@@ -1,86 +1,78 @@
--- Register the Namespace.
-local _, NS = ...;
-NS.Config = {};
---local Config = NS.Config;
+----------------------------------------
+-- Namespace / Locals
+----------------------------------------
+local _, ns = ...;
+ns.Config = {};
+local Config = ns.Config;
+local UIOptions;
 
 
 
 
--- Locals.
-NS.Config = {
+----------------------------------------
+-- Defaults
+----------------------------------------
+local defaults = {
 	Data = {
 		Realm = GetRealmName(),
 		Char = UnitName("player"),
-		GUID = UnitGUID("player")
+		GUID = UnitGUID("player"),
 	},
 	Settings = {
-		Default = {
-			SoundDelay = .5,			-- Half a second.
-			SoundChannel = "Dialog",	-- Master, SFX, Music, Ambience, Dialog.
-			Debug = true				-- Make sure this is set to false for releases.
-		}
-	}
+		SoundDelay = .5,			-- Half a second.
+		SoundChannel = "Dialog",	-- Master, SFX, Music, Ambience, Dialog.
+		Debug = true,				-- Make sure this is set to false for releases.
+	},
 };
 
 
-SendSystemMessage(CritCommanderDB[NS.Config.Data.Realm][NS.Config.Data.Char].GUID)
 
+
+----------------------------------------
+-- Events / Handlers
+----------------------------------------
 -- Creates frame to listen for "VARIABLES_LOADED".
 local varListenerFrame = CreateFrame("Frame")
 varListenerFrame:RegisterEvent("VARIABLES_LOADED");
-varListenerFrame:SetScript("OnEvent", function(self, event) 
-	self:OnEvent(event)
-end)
-
-
-
--- Calls method once "VARIABLES_LOADED" has been confirmed.
---local function varListenerFrame:OnEvent(event, ...)
- --   if (event == "VARIABLES_LOADED") then
---		critCommander_VARIABLES_LOADED();
---	end;
---end;
-
-
+varListenerFrame:SetScript("OnEvent", function(self, event) self:OnEvent(event) end)
 
 
 -- Method to load config
 function varListenerFrame:OnEvent(event)
+
+	
 	-- Initialize our SavedVariable.
 	if (not CritCommanderDB) then 
 		CritCommanderDB = {};
-		SendSystemMessage("Crit Commander - Creating config.");
+		SendSystemMessage("Crit Commander - Creating CritCommanderDB");
 	end;
-	if (not CritCommanderDB[NS.Config.Data.Realm]) then 
-		CritCommanderDB[NS.Config.Data.Realm] = {};
-		SendSystemMessage("Crit Commander - Adding realm to config.");
+	if (not CritCommanderDB[defaults.Data.Realm]) then 
+		CritCommanderDB[defaults.Data.Realm] = {};
+		SendSystemMessage("Crit Commander - Adding realm to CritCommanderDB");
 	end;
-	if (not CritCommanderDB[NS.Config.Data.Realm][NS.Config.Data.Char]) then 
-		CritCommanderDB[NS.Config.Data.Realm][NS.Config.Data.Char] = {};
-		SendSystemMessage("Crit Commander - Adding character to config.");
+	if (not CritCommanderDB[defaults.Data.Realm][defaults.Data.Char]) then 
+		CritCommanderDB[defaults.Data.Realm][defaults.Data.Char] = {};
+		SendSystemMessage("Crit Commander - Adding character to CritCommanderDB");
     end;
     
 
-	-- load each option, set default if not there.
-	if ( not CritCommanderDB[NS.Config.Data.Realm][NS.Config.Data.Char].GUID ) then 
-		CritCommanderDB[NS.Config.Data.Realm][NS.Config.Data.Char].GUID = Config.Data.GUID;
+	-- load each option, or set default if not there.
+	if ( not CritCommanderDB[defaults.Data.Realm][defaults.Data.Char].GUID ) then 
+		CritCommanderDB[defaults.Data.Realm][defaults.Data.Char].GUID = defaults.Data.GUID;
 	end;
-	if ( not CritCommanderDB[NS.Config.Data.Realm][NS.Config.Data.Char].SoundDelay ) then 
-		CritCommanderDB[NS.Config.Data.Realm][NS.Config.Data.Char].SoundDelay = Config.Settings.Default.SoundDelay;
+	if ( not CritCommanderDB[defaults.Data.Realm][defaults.Data.Char].SoundDelay ) then 
+		CritCommanderDB[defaults.Data.Realm][defaults.Data.Char].SoundDelay = defaults.Settings.SoundDelay;
 	end;
-	if ( not CritCommanderDB[NS.Config.Data.Realm][NS.Config.Data.Char].SoundChannel ) then 
-		CritCommanderDB[NS.Config.Data.Realm][NS.Config.Data.Char].SoundChannel = Config.Settings.Default.SoundChannel;
+	if ( not CritCommanderDB[defaults.Data.Realm][defaults.Data.Char].SoundChannel ) then 
+		CritCommanderDB[defaults.Data.Realm][defaults.Data.Char].SoundChannel = defaults.Settings.SoundChannel;
 	end;
-	if ( not CritCommanderDB[NS.Config.Data.Realm][NS.Config.Data.Char].Debug ) then 
-		CritCommanderDB[NS.Config.Data.Realm][NS.Config.Data.Char].Debug = Config.Settings.Default.Debug;
+	if ( not CritCommanderDB[defaults.Data.Realm][defaults.Data.Char].Debug ) then 
+		CritCommanderDB[defaults.Data.Realm][defaults.Data.Char].Debug = defaults.Settings.Debug;
 	end;
     
 
-	SendSystemMessage("Crit Commander - Variables loaded.");
+	SendSystemMessage("Crit Commander - CritCommanderDB loaded");
 end
-
-
-
 
 
 -- Options.lua end.

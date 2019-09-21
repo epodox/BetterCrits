@@ -9,4 +9,4 @@
 Luas\Config.lua
 Luas\OptionsFrame.lua
 Luas\Crit.lua
-Luas\Main.lua
+Luas\Init.lua
