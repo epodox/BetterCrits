@@ -1,11 +1,17 @@
 ----------------------------------------
 -- Namespace / Locals
 ----------------------------------------
-local _, ns = ...;
-ns.Config = {};
-local Config = ns.Config;
+local _, addon = ...;
+addon.Config = {};
+local Config = addon.Config;
 local UIOptions;
 local debugValue;
+local thisServer
+local thisPlayer
+local main = CreateFrame("Frame")
+main:SetScript("OnEvent", function(self, event, ...)
+	return self[event](self, event, ...)
+end)
 
 
 
@@ -27,90 +33,118 @@ local defaults = {
 
 
 
-
 ----------------------------------------
 -- Events / Handlers
 ----------------------------------------
--- Creates frame to listen for "VARIABLES_LOADED".
-local varListenerFrame = CreateFrame("Frame")
-varListenerFrame:RegisterEvent("VARIABLES_LOADED");
-varListenerFrame:SetScript("OnEvent", function(self, event) self:OnEvent(event) end)
+main:RegisterEvent("PLAYER_LOGIN")
+function main.PLAYER_LOGIN(self, event)
 
-
--- Method to load config
-function varListenerFrame:OnEvent(event)
-
-	local thisServer = CritCommanderDB[defaults.Data.Realm];
-	local thisPlayer = CritCommanderDB[defaults.Data.Realm][defaults.Data.Char];
-	
-	-- Initialize our SavedVariable.
-	if (not CritCommanderDB) then 
-		CritCommanderDB = {};
-		SendSystemMessage("Crit Commander - Creating CritCommanderDB");
+	CritCommanderDB = CritCommanderDB or {}
+	if (not CritCommanderDB[defaults.Data.Realm]) then 
+		CritCommanderDB[defaults.Data.Realm] = {};
 	end;
-	if (not thisServer) then 
-		thisServer = {};
-		SendSystemMessage("Crit Commander - Adding realm to CritCommanderDB");
-	end;
-	if (not thisPlayer) then 
-		thisPlayer = {};
-		SendSystemMessage("Crit Commander - Adding character to CritCommanderDB");
+	if (not CritCommanderDB[defaults.Data.Realm][defaults.Data.Char]) then 
+		CritCommanderDB[defaults.Data.Realm][defaults.Data.Char] = {};
     end;
-    
-
+	
+	thisServer = CritCommanderDB[defaults.Data.Realm];
+	thisPlayer = CritCommanderDB[defaults.Data.Realm][defaults.Data.Char];
+	
 	-- load each option, or set default if not there.
-	if ( not thisPlayer.GUID ) then 
+	if ( not thisPlayer.GUID == nil ) then 
 		thisPlayer.GUID = defaults.Data.GUID;
 	end;
-	if ( not thisPlayer.SoundDelay ) then 
+	if ( not thisPlayer.SoundDelay == nil ) then 
 		thisPlayer.SoundDelay = defaults.Settings.SoundDelay;
 	end;
-	if ( not thisPlayer.SoundChannel ) then 
+	if ( thisPlayer.SoundChannel == nil ) then 
 		thisPlayer.SoundChannel = defaults.Settings.SoundChannel;
 	end;
-	if ( not CritCommanderDB[defaults.Data.Realm][defaults.Data.Char].Debug ) then 
+	if ( thisPlayer.Debug == nil ) then 
 		thisPlayer.Debug = defaults.Settings.Debug;
 	end;
-	
-	
-
-	-- Register in the Interface Addon Options GUI
-	UIOptions = CreateFrame("Frame", "CritCommanderOptionsPanel", UIParent)
-	UIOptions.name = "CritCommander"
-	UIOptions.okay = function (self) CritCommanderOptionsPanel_Close()
-		thisPlayer.Debug = debugValue
-	end
-	UIOptions.cancel = function (self)  CritCommanderOptionsPanel_CancelOrLoad()
-
-	end
-	InterfaceOptions_AddCategory(UIOptions)
 
 
-	-- Debug checkbox.
-	debugCheckButton = CreateFrame("CheckButton", "debugCheckButton_CritCommander", UIOptions, "ChatConfigCheckButtonTemplate")
-	debugCheckButton:SetPoint("TOPLEFT", 200, -65)
-	debugCheckButton_CritCommanderText:SetText("Debug")
-	debugCheckButton.tooltip = "Debug mode will allow extra logging to the chat window."
-	debugCheckButton:SetScript("OnShow",
-	function()
-		-- debugValue = critCommanderConfig[critCommanderRealm][critCommanderChar].Debug  Prob not needed.
-		debugCheckButton:SetChecked(thisPlayer.Debug)
-	end)
-	debugCheckButton:SetScript("OnClick", 
-	function() 
-		if debugCheckButton:GetChecked() == true then 
-			debugCheckButton:SetChecked(false)
-			debugValue = false
-		else 
-			debugCheckButton:SetChecked(true)
-			debugValue = true
+	local loader = CreateFrame('Frame', nil, InterfaceOptionsFrame)
+	loader:SetScript('OnShow', function(self)
+		self:SetScript('OnShow', nil)
+
+		if not main.optionsPanel then
+			main.optionsPanel = main:CreateOptionsUI("Crit Commander")
+			InterfaceOptions_AddCategory(main.optionsPanel);
 		end
 	end)
-
-
-	SendSystemMessage("Crit Commander - CritCommanderDB loaded");
 end
 
+
+local function MakeCheckbox(name, parent)
+    local cb = CreateFrame("CheckButton", name, parent, "UICheckButtonTemplate")
+    cb:SetWidth(25)
+    cb:SetHeight(25)
+    cb:Show()
+
+    local cblabel = cb:CreateFontString(nil, "OVERLAY")
+    cblabel:SetFontObject("GameFontHighlight")
+    cblabel:SetPoint("LEFT", cb,"RIGHT", 5,0)
+    cb.label = cblabel
+    return cb
+end
+
+
+local tooltipOnEnter = function(self, event)
+    GameTooltip:SetOwner(self, "ANCHOR_TOPLEFT")
+    GameTooltip:SetText(self.tooltipText, nil, nil, nil, nil, false);
+    GameTooltip:Show();
+end
+
+
+local tooltipOnLeave = function(self, event)
+    GameTooltip:Hide();
+end
+
+
+local function AddTooltip(widget, tooltipText)
+    widget.tooltipText = tooltipText
+    widget:SetScript("OnEnter", tooltipOnEnter)
+    widget:SetScript("OnLeave", tooltipOnLeave)
+end
+
+
+function main:CreateOptionsUI(name, parent)
+	local frame = CreateFrame("Frame", nil, InterfaceOptionsFrame)
+	frame:Hide()
+
+	frame.parent = parent
+	frame.name = name
+
+	frame:SetScript("OnShow", function(self)
+		SendSystemMessage(tostring(thisPlayer.Debug))
+        self.content.addonDebug:SetChecked(thisPlayer.Debug)
+    end)
+
+	local label = frame:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
+	label:SetPoint("TOPLEFT", 10, -15)
+	label:SetPoint("BOTTOMRIGHT", frame, "TOPRIGHT", 10, -45)
+	label:SetJustifyH("LEFT")
+    label:SetJustifyV("TOP")
+	label:SetText(name)
+
+	local content = CreateFrame("Frame", "CADOptionsContent", frame)
+	content:SetPoint("TOPLEFT", 10, -10)
+    content:SetPoint("BOTTOMRIGHT", -10, 10)
+	frame.content = content
+	
+	local adg = MakeCheckbox(nil, content)
+    adg.label:SetText("Turn on debug mode")
+    adg:SetPoint("TOPLEFT", 10, -60)
+    content.addonDebug = adg
+    adg:SetScript("OnClick",function(self,button)
+        thisPlayer.Debug = not thisPlayer.Debug
+    end)
+    AddTooltip(adg, "Adds extra logging to chat window.")
+
+	return frame
+end
 
 
 -- Options.lua end.

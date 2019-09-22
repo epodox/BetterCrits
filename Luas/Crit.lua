@@ -1,10 +1,27 @@
 ----------------------------------------
 -- Namespace / Locals
 ----------------------------------------
-local _, ns = ...;
-ns.Crit = {}; -- adds Crit table to addon namespace
-local Crit = ns.Crit;
-local critListener;
+local _, addon = ...;
+addon.Crit = {}; -- adds Crit table to addon namespace
+local Crit = addon.Crit;
+local critListener = CreateFrame("Frame");
+
+
+
+
+----------------------------------------
+-- Functions
+----------------------------------------
+-- Backing function to play the sound files.
+	local function _playSound(soundFileName)
+		PlaySoundFile("Interface\\AddOns\\CritCommander\\Sounds\\" .. soundFileName, CritCommanderDB[GetRealmName()][UnitName("player")].SoundChannel)
+	end
+
+
+-- Fucntion to play sound file.
+local function playSound()
+	_playSound("wow1.mp3")
+end
 
 
 
@@ -14,7 +31,6 @@ local critListener;
 ----------------------------------------
 -- Subscribes to combat event.
 function Crit:StartListening()
-	critListener = CreateFrame("Frame");
 	critListener:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
 	critListener:SetScript("OnEvent", function(self, event) self:OnEvent(event, CombatLogGetCurrentEventInfo()) end);
 end
@@ -36,25 +52,8 @@ function critListener:OnEvent(event, ...)
 
 	
 	if critical and sourceGUID == CritCommanderDB[GetRealmName()][UnitName("player")].GUID then
-		C_Timer.After(thisPlayer.SoundDelay, playSound)
+		C_Timer.After(CritCommanderDB[GetRealmName()][UnitName("player")].SoundDelay, playSound)
 	end
-end
-
-
-
-
-----------------------------------------
--- Functions
-----------------------------------------
--- Fucntion to play sound file.
-local function playSound()
-	_playSound("wow1.mp3")
-end
-
-
--- Backing function to play the sound files.
-local function _playSound(soundFileName)
-	PlaySoundFile("Interface\\AddOns\\CritCommander\\Sounds\\" .. soundFileName, thisPlayer.SoundChannel)
 end
 
 

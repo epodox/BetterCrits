@@ -1,7 +1,7 @@
 ----------------------------------------
 -- Namespace / Locals
 ----------------------------------------
-local _, ns = ...;
+local _, addon = ...;
 
 
 
@@ -9,14 +9,8 @@ local _, ns = ...;
 ----------------------------------------
 -- Functions
 ----------------------------------------
-function ns:Print(...)
-    local hex = select(4, self.Config:GetThemeColor());
-    local prefix = string.format("|cff%s%s|r", hex:upper(), "Crit Commander:");	
-    DEFAULT_CHAT_FRAME:AddMessage(string.join(" ", prefix, ...));
-end
 
-
-function ns:Init(event, name)
+function addon:Init(event, name)
 	if (name ~= "CritCommander") then return end 
 
 	
@@ -33,12 +27,12 @@ function ns:Init(event, name)
 	end
 
 	
-	ns.Crit.StartListening()
-	
-	
-	ns:Print("Welcome back", UnitName("player").."!");
+	addon.Crit.StartListening()
 end
 
 local events = CreateFrame("Frame");
 events:RegisterEvent("ADDON_LOADED");
-events:SetScript("OnEvent", ns.Init);
+events:SetScript("OnEvent", addon.Init);
+
+-- Init.lua end.
+SendSystemMessage("Crit Commander - Init.lua has been loaded.")
