@@ -33,7 +33,7 @@ function ns:Init(event, name)
 	end
 
 	
-	ns.Crit.StartListening
+	ns.Crit.StartListening()
 	
 	
 	ns:Print("Welcome back", UnitName("player").."!");
