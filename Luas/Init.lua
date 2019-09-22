@@ -32,7 +32,11 @@ function ns:Init(event, name)
 		FrameStackTooltip_Toggle();
 	end
 
-    ns:Print("Welcome back", UnitName("player").."!");
+	
+	ns.Crit.StartListening
+	
+	
+	ns:Print("Welcome back", UnitName("player").."!");
 end
 
 local events = CreateFrame("Frame");

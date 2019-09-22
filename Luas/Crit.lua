@@ -2,6 +2,9 @@
 -- Namespace / Locals
 ----------------------------------------
 local _, ns = ...;
+ns.Crit = {}; -- adds Crit table to addon namespace
+local Crit = ns.Crit;
+local critListener;
 
 
 
@@ -10,13 +13,14 @@ local _, ns = ...;
 -- Events / Handlers
 ----------------------------------------
 -- Subscribes to combat event.
-local combatLogFrame = CreateFrame("Frame")
-combatLogFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-combatLogFrame:SetScript("OnEvent", function(self, event) self:OnEvent(event, CombatLogGetCurrentEventInfo()) end)
-
+function Crit:StartListening()
+	critListener = CreateFrame("Frame");
+	critListener:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
+	critListener:SetScript("OnEvent", function(self, event) self:OnEvent(event, CombatLogGetCurrentEventInfo()) end);
+end
 
 -- Parses event, plays sound if its a crit.
-function combatLogFrame:OnEvent(event, ...)
+function critListener:OnEvent(event, ...)
 	local timestamp, subevent, _, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags = ...
 	local spellId, spellName, spellSchool
 	local amount, overkill, school, resisted, blocked, absorbed, critical, glancing, crushing, isOffHand
@@ -31,8 +35,8 @@ function combatLogFrame:OnEvent(event, ...)
     end
 
 	
-	if critical and sourceGUID == mGuid then
-		C_Timer.After(CritCommanderDB[ns.Config.Data.Realm][ns.Config.Data.Char].SoundDelay, playSound)
+	if critical and sourceGUID == CritCommanderDB[GetRealmName()][UnitName("player")].GUID then
+		C_Timer.After(thisPlayer.SoundDelay, playSound)
 	end
 end
 
@@ -44,13 +48,13 @@ end
 ----------------------------------------
 -- Fucntion to play sound file.
 local function playSound()
-	PlaySoundFile("wow1.mp3")
+	_playSound("wow1.mp3")
 end
 
 
 -- Backing function to play the sound files.
-local function backingPlaySound(soundFileName)
-	PlaySoundFile("Interface\\AddOns\\CritCommander\\Sounds\\" .. soundFileName, CritCommanderDB[critCommanderRealm][critCommanderChar].SoundChannel)
+local function _playSound(soundFileName)
+	PlaySoundFile("Interface\\AddOns\\CritCommander\\Sounds\\" .. soundFileName, thisPlayer.SoundChannel)
 end
 
 
