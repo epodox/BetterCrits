@@ -27,7 +27,7 @@ local defaults = {
 	Settings = {
 		SoundDelay = .5,			-- Half a second.
 		SoundChannel = "Master",	-- Master, SFX, Music, Ambience, Dialog.
-		Debug = true,				-- Make sure this is set to false for releases.
+		Debug = false,				-- Make sure this is set to false for releases.
 	},
 };
 
