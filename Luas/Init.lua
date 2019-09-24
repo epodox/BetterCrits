@@ -9,7 +9,6 @@ local _, addon = ...;
 ----------------------------------------
 -- Functions
 ----------------------------------------
-
 function addon:Init(event, name)
 	if (name ~= "CritCommander") then return end 
 
@@ -33,6 +32,3 @@ end
 local events = CreateFrame("Frame");
 events:RegisterEvent("ADDON_LOADED");
 events:SetScript("OnEvent", addon.Init);
-
--- Init.lua end.
-SendSystemMessage("Crit Commander - Init.lua has been loaded.")
