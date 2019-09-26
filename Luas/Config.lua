@@ -50,18 +50,10 @@ function mainCritCommanderFrame.PLAYER_LOGIN(self, event)
 	thisPlayer = CritCommanderDB[defaults.Data.Realm][defaults.Data.Char];
 	
 	-- load each option, or set default if not there.
-	if ( not thisPlayer.GUID == nil ) then 
-		thisPlayer.GUID = defaults.Data.GUID;
-	end;
-	if ( not thisPlayer.SoundDelay == nil ) then 
-		thisPlayer.SoundDelay = defaults.Settings.SoundDelay;
-	end;
-	if ( thisPlayer.SoundChannel == nil ) then 
-		thisPlayer.SoundChannel = defaults.Settings.SoundChannel;
-	end;
-	if ( thisPlayer.Debug == nil ) then 
-		thisPlayer.Debug = defaults.Settings.Debug;
-	end;
+	if ( thisPlayer.GUID == nil ) then thisPlayer.GUID = defaults.Data.GUID; end;
+	if ( thisPlayer.SoundDelay == nil ) then thisPlayer.SoundDelay = defaults.Settings.SoundDelay; end;
+	if ( thisPlayer.SoundChannel == nil ) then thisPlayer.SoundChannel = defaults.Settings.SoundChannel; end;
+	if ( thisPlayer.Debug == nil ) then thisPlayer.Debug = defaults.Settings.Debug;	end;
 
 	-- Creates frame for options panel.
 	local loader = CreateFrame('Frame', nil, InterfaceOptionsFrame)
