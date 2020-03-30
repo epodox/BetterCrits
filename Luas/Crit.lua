@@ -39,18 +39,22 @@ end
 -- Parses event, plays sound if its a crit.
 function critListener:OnEvent(event, ...)
 	local timestamp, subevent, _, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags = ...
+  if sourceGUID ~= CritCommanderDB[GetRealmName()][UnitName("player")].GUID then
+    return
+  end
+
 	local spellId, spellName, spellSchool
 	local amount, overkill, school, resisted, blocked, absorbed, critical, glancing, crushing, isOffHand
 
-	if subevent == "SWING_DAMAGE" then
-		amount, overkill, school, resisted, blocked, absorbed, critical, glancing, crushing, isOffHand = select(12, ...)
-	elseif subevent == "SPELL_DAMAGE" then
-		spellId, spellName, spellSchool, amount, overkill, school, resisted, blocked, absorbed, critical, glancing, crushing, isOffHand = select(12, ...)
-    elseif subevent == "RANGE_DAMAGE" then
-		spellId, spellName, spellSchool, amount, overkill, school, resisted, blocked, absorbed, critical, glancing, crushing, isOffHand = select(12, ...)
-    end
+  if subevent == "SWING_DAMAGE" then
+    amount, overkill, school, resisted, blocked, absorbed, critical, glancing, crushing, isOffHand = select(12, ...)
+	elseif subevent == "SPELL_DAMAGE"  or subevent == "RANGE_DAMAGE" then
+    spellId, spellName, spellSchool, amount, overkill, school, resisted, blocked, absorbed, critical, glancing, crushing, isOffHand = select(12, ...)
+  elseif subevent == "SPELL_HEAL" then
+		spellId, spellName, spellSchool, amount, overheal, absorbed, critical = select(12, ...)
+  end
 
-		if critical and sourceGUID == CritCommanderDB[GetRealmName()][UnitName("player")].GUID then
-		C_Timer.After(CritCommanderDB[GetRealmName()][UnitName("player")].SoundDelay, playSound)
-	end
+  if critical then
+    C_Timer.After(CritCommanderDB[GetRealmName()][UnitName("player")].SoundDelay, playSound)
+  end
 end
