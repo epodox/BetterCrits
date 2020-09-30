@@ -1,6 +1,9 @@
-v0.1.9 (Under development)
-- Refactor of base code.
+v1.0.0 (Current)
 - Added heals to crit commander.
+- General bug fixes
+
+v0.1.9
+- Refactor of base code.
 - Added system message so you know the addon has loaded (debug mode).
 - Added options in Interface Options to change delay, sound channel, and to enable debug mode.
 - Changed playback function to randomize for multiple clips.
@@ -8,8 +11,6 @@ v0.1.9 (Under development)
 - Changed default debug mode to off.
 - Added /rl command to reload UI.
 - Added /fs command for debugging.
-- General bug fixes
 
-
-v0.1.8 (Current)
+v0.1.8
 - Base alpha version that is working.
