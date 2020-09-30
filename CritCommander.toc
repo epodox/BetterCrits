@@ -1,4 +1,4 @@
-## Interface: 11302
+## Interface: 11305
 ## Title: Crit Commander
 ## DefaultState: Enabled
 ## Author: Epodox

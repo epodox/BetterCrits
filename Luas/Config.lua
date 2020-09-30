@@ -103,8 +103,9 @@ end
 
 
 -- Rounds to first decimial
-local function roundToFirstDecimal(t)
-    return math.round(t*10)*0.1
+local function roundToFirstDecimal(number)
+	decimals = 1
+	return (("%%.%df"):format(decimals)):format(number)
 end
 
 
