@@ -24,9 +24,9 @@ function addon:Init(event, name)
 		LoadAddOn("Blizzard_DebugTools");
 		FrameStackTooltip_Toggle();
 	end
-
 	
 	addon.Crit.StartListening()
+	print("CritCommander v1.0")
 end
 
 local events = CreateFrame("Frame");

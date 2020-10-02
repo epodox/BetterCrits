@@ -48,15 +48,13 @@ function critListener:OnEvent(event, ...)
 	local spellId, spellName, spellSchool
 	local amount, overkill, school, resisted, blocked, absorbed, critical, glancing, crushing, isOffHand
 
-	if subevent == "SWING_DAMAGE" then
-		amount, overkill, school, resisted, blocked, absorbed, critical, glancing, crushing, isOffHand = select(12, ...)
-	elseif subevent == "SPELL_DAMAGE" or subevent == "RANGE_DAMAGE" then
+	if subevent == "SWING_DAMAGE" or subevent == "SPELL_DAMAGE" or subevent == "SPELL_PERIODIC_DAMAGE" or subevent == "RANGE_DAMAGE" then
 		spellId, spellName, spellSchool, amount, overkill, school, resisted, blocked, absorbed, critical, glancing, crushing, isOffHand = select(12, ...)
     elseif subevent == "SPELL_HEAL" then
 		spellId, spellName, spellSchool, amount, overheal, absorbed, critical = select(12, ...)
-    end
+	end
 
 	if critical then
-	C_Timer.After(CritCommanderDB[GetRealmName()][UnitName("player")].SoundDelay, playSound)
+		C_Timer.After(CritCommanderDB[GetRealmName()][UnitName("player")].SoundDelay, playSound)
 	end
 end

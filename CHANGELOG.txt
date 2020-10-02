@@ -1,4 +1,7 @@
-v1.0.0 (Current)
+v1.1.0 (Current)
+- Added periodic damage crits. (Dots do not crit in classic.)
+
+v1.0.0
 - Added heals to crit commander.
 - General bug fixes
 
