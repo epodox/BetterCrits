@@ -26,7 +26,7 @@ function addon:Init(event, name)
 	end
 	
 	addon.Crit.StartListening()
-	print("CritCommander v1.0")
+	print("CritCommander v1.1")
 end
 
 local events = CreateFrame("Frame");
