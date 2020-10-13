@@ -14,7 +14,7 @@ local critListener = CreateFrame("Frame");
 ----------------------------------------
 -- Backing function to play the sound files.
 local function _playSound(soundFileName)
-	PlaySoundFile("Interface\\AddOns\\CritCommander\\Sounds\\" .. soundFileName, CritCommanderDB[GetRealmName()][UnitName("player")].SoundChannel)
+	PlaySoundFile("Interface\\AddOns\\BetterCrits\\Sounds\\" .. soundFileName, BetterCritsDB[GetRealmName()][UnitName("player")].SoundChannel)
 end
 
 
@@ -41,7 +41,7 @@ function critListener:OnEvent(event, ...)
 	local timestamp, subevent, _, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags = ...
 	
 	-- Checks to see if the damage event is our players, otherwise ignores.
-	if sourceGUID ~= CritCommanderDB[GetRealmName()][UnitName("player")].GUID then
+	if sourceGUID ~= BetterCritsDB[GetRealmName()][UnitName("player")].GUID then
 		return
 	end
 
@@ -55,6 +55,6 @@ function critListener:OnEvent(event, ...)
 	end
 
 	if critical then
-		C_Timer.After(CritCommanderDB[GetRealmName()][UnitName("player")].SoundDelay, playSound)
+		C_Timer.After(BetterCritsDB[GetRealmName()][UnitName("player")].SoundDelay, playSound)
 	end
 end

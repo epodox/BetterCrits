@@ -1,4 +1,7 @@
-v1.1.0 (Current)
+v1.2.0 (Current)
+- Changing name from Crit Commander to Better Crits to better reflect our addon suite.
+
+v1.1.0 
 - Added periodic damage crits. (Dots do not crit in classic.)
 
 v1.0.0

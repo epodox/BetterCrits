@@ -1,0 +1,12 @@
+## Interface: 90001
+## Title: Better Damage
+## DefaultState: Enabled
+## Author: Epodox
+## Version: 1.2.0
+## Notes: Enhances your crit damage!
+## SavedVariables: BetterCritsDB
+# Retail:90001, Classic:11305
+
+Luas\Config.lua
+Luas\Crit.lua
+Luas\Init.lua
