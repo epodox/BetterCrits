@@ -1,5 +1,5 @@
 ## Interface: 90001
-## Title: Better Damage
+## Title: Better Crits
 ## DefaultState: Enabled
 ## Author: Epodox
 ## Version: 1.2.0
