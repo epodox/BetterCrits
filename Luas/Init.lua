@@ -10,7 +10,7 @@ local _, addon = ...;
 -- Functions
 ----------------------------------------
 function addon:Init(event, name)
-	if (name ~= "CritCommander") then return end 
+	if (name ~= "BetterCrits") then return end 
 
 	
 	----------------------------------
@@ -26,7 +26,7 @@ function addon:Init(event, name)
 	end
 	
 	addon.Crit.StartListening()
-	print("CritCommander v1.1")
+	print("BetterCrits Loaded")
 end
 
 local events = CreateFrame("Frame");

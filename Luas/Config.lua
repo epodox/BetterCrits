@@ -7,8 +7,8 @@ local Config = addon.Config;
 local UIOptions;
 local debugValue;
 local thisPlayer;
-local mainCritCommanderFrame = CreateFrame("Frame")
-mainCritCommanderFrame:SetScript("OnEvent", function(self, event, ...)
+local mainBetterCritsFrame = CreateFrame("Frame")
+mainBetterCritsFrame:SetScript("OnEvent", function(self, event, ...)
 	return self[event](self, event, ...)
 end);
 
@@ -25,7 +25,7 @@ local defaults = {
 		GUID = UnitGUID("player"),
 	},
 	Settings = {
-		SoundDelay = .5,			-- Half a second.
+		SoundDelay = .0,			-- Half a second.
 		SoundChannel = "Master",	-- Master, SFX, Music, Ambience, Dialog.
 		Debug = false,				-- Make sure this is set to false for releases.
 	},
@@ -37,17 +37,17 @@ local defaults = {
 ----------------------------------------
 -- Events / Handlers
 ----------------------------------------
-mainCritCommanderFrame:RegisterEvent("PLAYER_LOGIN")
-function mainCritCommanderFrame.PLAYER_LOGIN(self, event)
+mainBetterCritsFrame:RegisterEvent("PLAYER_LOGIN")
+function mainBetterCritsFrame.PLAYER_LOGIN(self, event)
 	-- Build SavedVariables database if one has not been created. Also populates defaults.
-	CritCommanderDB = CritCommanderDB or {}
-	if (not CritCommanderDB[defaults.Data.Realm]) then 
-		CritCommanderDB[defaults.Data.Realm] = {};
+	BetterCritsDB = BetterCritsDB or {}
+	if (not BetterCritsDB[defaults.Data.Realm]) then 
+		BetterCritsDB[defaults.Data.Realm] = {};
 	end;
-	if (not CritCommanderDB[defaults.Data.Realm][defaults.Data.Char]) then 
-		CritCommanderDB[defaults.Data.Realm][defaults.Data.Char] = {};
+	if (not BetterCritsDB[defaults.Data.Realm][defaults.Data.Char]) then 
+		BetterCritsDB[defaults.Data.Realm][defaults.Data.Char] = {};
     end;
-	thisPlayer = CritCommanderDB[defaults.Data.Realm][defaults.Data.Char];
+	thisPlayer = BetterCritsDB[defaults.Data.Realm][defaults.Data.Char];
 	
 	-- load each option, or set default if not there.
 	if ( thisPlayer.GUID == nil ) then thisPlayer.GUID = defaults.Data.GUID; end;
@@ -60,9 +60,9 @@ function mainCritCommanderFrame.PLAYER_LOGIN(self, event)
 	loader:SetScript('OnShow', function(self)
 		self:SetScript('OnShow', nil)
 
-		if not mainCritCommanderFrame.optionsPanel then
-			mainCritCommanderFrame.optionsPanel = mainCritCommanderFrame:CreateOptionsUI("Crit Commander")
-			InterfaceOptions_AddCategory(mainCritCommanderFrame.optionsPanel);
+		if not mainBetterCritsFrame.optionsPanel then
+			mainBetterCritsFrame.optionsPanel = mainBetterCritsFrame:CreateOptionsUI("Better Crits")
+			InterfaceOptions_AddCategory(mainBetterCritsFrame.optionsPanel);
 		end
 	end)
 end
@@ -81,7 +81,7 @@ local uniquealyzerSlider = 1;
 local function makeCheckbox(parent, x_loc, y_loc, displayText)
 	uniquealyzerCheckbox = uniquealyzerCheckbox + 1;
 	
-	local checkbutton = CreateFrame("CheckButton", "critCommander_optionsCheckbutton_0" .. uniquealyzerCheckbox, parent, "ChatConfigCheckButtonTemplate");
+	local checkbutton = CreateFrame("CheckButton", "BetterCrits_optionsCheckbutton_0" .. uniquealyzerCheckbox, parent, "ChatConfigCheckButtonTemplate");
 	checkbutton:SetPoint("TOPLEFT", x_loc, y_loc);
 	getglobal(checkbutton:GetName() .. 'Text'):SetText(displayText);
 
@@ -93,7 +93,7 @@ end
 local function makeSlider(parent, x_loc, y_loc, displayText)
 	uniquealyzerSlider = uniquealyzerSlider + 1;
 	
-	local slider = CreateFrame("Slider", "critCommander_optionsSlider_0" .. uniquealyzerSlider, parent, "OptionsSliderTemplate");
+	local slider = CreateFrame("Slider", "BetterCrits_optionsSlider_0" .. uniquealyzerSlider, parent, "OptionsSliderTemplate");
 	slider:SetPoint("TOPLEFT", x_loc, y_loc);
 	slider:SetObeyStepOnDrag(true)
 	getglobal(slider:GetName() .. 'Text'):SetText(displayText);
@@ -110,8 +110,8 @@ end
 
 
 -- Main frame for addon.
-function mainCritCommanderFrame:CreateOptionsUI(name, parent)
-	-- Create mainCritCommanderFrame options window frame.
+function mainBetterCritsFrame:CreateOptionsUI(name, parent)
+	-- Create mainBetterCritsFrame options window frame.
 	local frame = CreateFrame("Frame", nil, InterfaceOptionsFrame)
 	frame:Hide()
 	frame.parent = parent
@@ -129,7 +129,7 @@ function mainCritCommanderFrame:CreateOptionsUI(name, parent)
     label:SetJustifyV("TOP")
 	label:SetText(name)
 
-	-- Set content for mainCritCommanderFrame frame.
+	-- Set content for mainBetterCritsFrame frame.
 	local content = CreateFrame("Frame", "CADOptionsContent", frame)
 	content:SetPoint("TOPLEFT", 10, -10)
     content:SetPoint("BOTTOMRIGHT", -10, 10)
